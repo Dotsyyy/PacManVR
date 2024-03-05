@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Navigation_Ghosts : MonoBehaviour
+public class BlinkyBehavior : MonoBehaviour
 {
     public Transform[] targets;
     public Transform player; // Reference to the Player transform
@@ -25,33 +25,36 @@ public class Navigation_Ghosts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Check if the agent has reached its current destination
-        if (!agent.pathPending && agent.remainingDistance < 0.1f)
+        if (agent.enabled)
         {
-            // Move to a new destination if not chasing Player
-            if (!isChasing)
+            // Check if the agent has reached its current destination
+            if (!agent.pathPending && agent.remainingDistance < 0.1f)
             {
-                MoveToRandomDestination();
+                // Move to a new destination if not chasing Player
+                if (!isChasing)
+                {
+                    MoveToRandomDestination();
+                }
             }
-        }
 
-        // Check if Player is close enough to start chasing
-        if (Vector3.Distance(transform.position, player.position) < chaseDistance)
-        {
-            if (!isChasing)
+            // Check if Player is close enough to start chasing
+            if (Vector3.Distance(transform.position, player.position) < chaseDistance)
             {
-                StartChasing();
+                if (!isChasing)
+                {
+                    StartChasing();
+                }
+                else
+                {
+                    UpdateChase();
+                }
             }
             else
             {
-                UpdateChase();
-            }
-        }
-        else
-        {
-            if (isChasing)
-            {
-                StopChasing();
+                if (isChasing)
+                {
+                    StopChasing();
+                }
             }
         }
     }
@@ -81,6 +84,7 @@ public class Navigation_Ghosts : MonoBehaviour
     void StopChasing()
     {
         isChasing = false;
+        agent.ResetPath();
     }
 
     // Move to a new random destination
@@ -94,5 +98,24 @@ public class Navigation_Ghosts : MonoBehaviour
 
         // Set the agent's destination to the new target position
         agent.destination = targets[currentTargetIndex].position;
+    }
+
+    // Handle collision with player
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            StopChasing();
+            agent.isStopped = true; // Stop the NavMeshAgent
+        }
+    }
+
+    // Resume chasing after collision exit (optional)
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            agent.isStopped = false; // Resume the NavMeshAgent
+        }
     }
 }
