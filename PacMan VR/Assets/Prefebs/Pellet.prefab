@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7513339191430149158}
   - component: {fileID: 2919484588803781218}
   - component: {fileID: 6811333667922789788}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pellet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

@@ -24,12 +24,19 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
+        // Deactivate all ghosts
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].gameObject.SetActive(false);
         }
 
+        // Deactivate all pellets
+        foreach (Transform singlePellet in pellets)
+        {
+            singlePellet.gameObject.SetActive(false);
+        }
     }
+
 
     private void NewRound()
     {
@@ -87,7 +94,7 @@ public class GameManager : MonoBehaviour
 
     public void PelletEaten(Pellet pellet)
     {
-        pellet.gameObject.SetActive(false);
+        pellet.gameObject.SetActive(false); // Deactivate the specific pellet that was eaten
         SetScore(this.score + pellet.points);
 
         if (!HasRemainingPellets())
@@ -97,11 +104,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
     private bool HasRemainingPellets()
     {
         foreach (Transform singlePellet in pellets)
         {
-            if (pellets.gameObject.activeSelf)
+            if (singlePellet.gameObject.activeSelf)
             {
                 return true;
             }
@@ -109,4 +118,5 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
+
 }

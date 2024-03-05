@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Vector3 startingPosition { get; private set; }
+    [SerializeField] protected Vector3 startingPosition;
 
     public void ResetState()
     {

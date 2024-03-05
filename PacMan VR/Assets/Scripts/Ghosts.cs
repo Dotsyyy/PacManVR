@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Ghosts : MonoBehaviour
 {
-    public Vector3 startingPosition { get; private set; }
+    [SerializeField] protected Vector3 startingPosition;
+
+
 
     public int points = 200;
 
@@ -18,4 +20,13 @@ public class Ghosts : MonoBehaviour
         this.gameObject.SetActive(true);
         this.transform.position = this.startingPosition;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            FindAnyObjectByType<GameManager>().PlayerEaten();
+        }
+    }
+
 }
