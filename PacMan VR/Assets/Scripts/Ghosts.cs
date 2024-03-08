@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ghosts : MonoBehaviour
 {
-    [SerializeField] protected Vector3 startingPosition;
+    public Vector3 startingPosition;
 
 
 
@@ -12,13 +12,20 @@ public class Ghosts : MonoBehaviour
 
     private void Start()
     {
-        ResetState();
+        startingPosition = this.transform.position;
+        //ResetState();
+    }
+
+    public void Deactivate()
+    {
+        this.gameObject.SetActive(false);
     }
 
     public void ResetState()
     {
         this.gameObject.SetActive(true);
         this.transform.position = this.startingPosition;
+        Debug.Log("Working?" + startingPosition);
     }
 
     private void OnTriggerEnter(Collider other)

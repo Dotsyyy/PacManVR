@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     private void NewRound()
     {
         foreach (Transform singlePellet in pellets)
@@ -47,8 +46,16 @@ public class GameManager : MonoBehaviour
         ResetState();
     }
 
-    private void ResetState()
+    private IEnumerator DelayedResetState()
     {
+        for (int i = 0; i < ghosts.Length; i++)
+        {
+            ghosts[i].Deactivate();
+        }
+
+        // Wait for one second
+        yield return new WaitForSeconds(1.0f);
+
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].ResetState();
@@ -57,7 +64,10 @@ public class GameManager : MonoBehaviour
         player.ResetState();
     }
 
-
+    private void ResetState()
+    {
+        StartCoroutine(DelayedResetState());
+    }
 
     private void SetScore(int _score)
     {
@@ -69,12 +79,6 @@ public class GameManager : MonoBehaviour
         lives = _lives;
     }
 
-    public void GhostEaten(Ghosts ghost)
-    {
-        int points = ghost.points;
-        SetScore(this.score + points);
-    }
-
     public void PlayerEaten()
     {
         //Need to put UI so u can do nothing
@@ -83,7 +87,7 @@ public class GameManager : MonoBehaviour
 
         if (this.lives > 0)
         {
-            Invoke(nameof(ResetState), 3.0f);
+            StartCoroutine(DelayedResetState());
         }
 
         if (this.lives <= 0)
@@ -100,11 +104,22 @@ public class GameManager : MonoBehaviour
         if (!HasRemainingPellets())
         {
             //You won UI
-            Invoke(nameof(NewRound), 3.0f);
+            StartCoroutine(DelayedNewRound());
         }
     }
 
+    private IEnumerator DelayedNewRound()
+    {
+        yield return new WaitForSeconds(3.0f);
+        NewRound();
+    }
 
+    public void SwordHit(Ghosts ghost)
+    {
+        ghost.gameObject.SetActive(false);
+        SetScore(this.score + ghost.points);
+        ghost.ResetState();
+    }
 
     private bool HasRemainingPellets()
     {
@@ -118,5 +133,4 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
-
 }
