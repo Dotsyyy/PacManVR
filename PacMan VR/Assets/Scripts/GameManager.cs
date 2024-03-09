@@ -4,9 +4,40 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // Static reference to the singleton instance
+    private static GameManager _instance;
+
+    // Public accessor for the singleton instance
+    public static GameManager Instance
+    {
+        get
+        {
+            // Check if the instance has not been set yet
+            if (_instance == null)
+            {
+                // Attempt to find an existing instance in the scene
+                _instance = FindObjectOfType<GameManager>();
+
+                // If no instance exists, create a new one
+                if (_instance == null)
+                {
+                    // Create a new GameObject to hold the GameManager instance
+                    GameObject singletonObject = new GameObject("GameManager");
+                    _instance = singletonObject.AddComponent<GameManager>();
+                }
+            }
+            return _instance;
+        }
+    }
+
+
+
+
     public Ghosts[] ghosts;
     public Player player;
     public Transform pellets;
+    public Sword sword;
+    public bool SwordGrabbed { get { return sword.Grabbed; } }
     public int score { get; private set; }
     public int lives { get; private set; }
 
@@ -50,7 +81,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < ghosts.Length; i++)
         {
-            ghosts[i].Deactivate();
+            ghosts[i].DeActivate();
         }
 
         // Wait for one second

@@ -6,7 +6,6 @@ public class ClydeBehavior : MonoBehaviour
 
     private Wander wanderScript;
     private Scared scaredScript;
-    [SerializeField] protected Sword sword;
 
     void Start()
     {
@@ -17,16 +16,17 @@ public class ClydeBehavior : MonoBehaviour
     private void Update()
     {
 
-        if (!sword.grabbed)
+        if (GameManager.Instance.SwordGrabbed)
         {
-            scaredScript.enabled = false;
-            wanderScript.enabled = true;
+            
+            scaredScript.enabled = true;
+            wanderScript.enabled = false;
 
         }
         else
         {
-            scaredScript.enabled = true;
-            wanderScript.enabled = false;
+            scaredScript.enabled = false;
+            wanderScript.enabled = true;
         }
     }
 }

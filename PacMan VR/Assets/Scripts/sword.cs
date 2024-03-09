@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    public bool grabbed { get; private set; }
+    public bool Grabbed { get; private set; }
 
     private void Start()
     {
@@ -15,14 +15,14 @@ public class Sword : MonoBehaviour
     public void IsGrabbed()
     {
         // Activate the sword when grabbed
-        grabbed = true;
+        Grabbed = true;
         // Start the coroutine to deactivate the sword after 7 seconds
         StartCoroutine(DeactivateAfterDelay());
     }
 
     public void ExitGrabbed()
     {
-        grabbed = false;
+        Grabbed = false;
     }
 
     private IEnumerator DeactivateAfterDelay()
@@ -39,7 +39,7 @@ public class Sword : MonoBehaviour
         Ghosts ghost = other.GetComponent<Ghosts>();
 
         // If a ghost is hit and the sword is grabbed, handle the interaction here
-        if (ghost != null && grabbed)
+        if (ghost != null && Grabbed)
         {
             GameManager gameManager = FindObjectOfType<GameManager>();
             if (gameManager != null)

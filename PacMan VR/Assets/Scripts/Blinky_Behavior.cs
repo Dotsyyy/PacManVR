@@ -10,7 +10,6 @@ public class Blinky_Behavior : MonoBehaviour
     private Wander wanderScript;
     private Chase chaseScript;
     private Scared scaredScript;
-    public Sword sword;
 
     void Start()
     {
@@ -23,7 +22,13 @@ public class Blinky_Behavior : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (!sword.grabbed)
+        if (GameManager.Instance.SwordGrabbed)
+        {
+            scaredScript.enabled = true;
+            chaseScript.enabled = false;
+            wanderScript.enabled = false;
+        }
+        else
         {
 
             if (distanceToPlayer <= chaseRange)
@@ -38,12 +43,7 @@ public class Blinky_Behavior : MonoBehaviour
                 chaseScript.enabled = false;
                 scaredScript.enabled = false;
             }
-        }
-        else
-        {
-            scaredScript.enabled = true;
-            chaseScript.enabled = false;
-            wanderScript.enabled = false;
+
         }
     }
 }

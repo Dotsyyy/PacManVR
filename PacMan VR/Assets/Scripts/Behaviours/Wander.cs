@@ -10,6 +10,7 @@ public class Wander : MonoBehaviour
     public float wanderSpeed = 3.5f; // Normal speed when not sneaking
     private NavMeshAgent agent;
     private int currentTargetIndex;
+    public bool IsActive { get; set; } = true; // Indicates whether the chase behavior is active
 
     void Start()
     {

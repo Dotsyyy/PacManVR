@@ -16,7 +16,7 @@ public class Ghosts : MonoBehaviour
         //ResetState();
     }
 
-    public void Deactivate()
+    public void DeActivate()
     {
         this.gameObject.SetActive(false);
     }
@@ -32,7 +32,7 @@ public class Ghosts : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            FindAnyObjectByType<GameManager>().PlayerEaten();
+            GameManager.Instance.PlayerEaten();
         }
     }
 
