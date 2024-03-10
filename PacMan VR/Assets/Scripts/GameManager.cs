@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,20 +31,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
-
     public Ghosts[] ghosts;
     public Player player;
     public Transform pellets;
     public Sword sword;
     public bool SwordGrabbed { get { return sword.Grabbed; } }
     public int score { get; private set; }
+    public int highScore { get; private set; }
     public int lives { get; private set; }
 
     private void Start()
     {
         NewGame();
+
+        if (PlayerPrefs.HasKey("highScore"))
+        {
+            highScore = PlayerPrefs.GetInt("highScore");
+        }
+        else
+        {
+            highScore = 0;
+        }
+    }
+
+    private void Awake()
+    {
+        // Ensure that this GameManager persists across scenes
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void NewGame()
@@ -66,6 +80,8 @@ public class GameManager : MonoBehaviour
         {
             singlePellet.gameObject.SetActive(false);
         }
+
+        SceneManager.LoadScene(1);
     }
 
     private void NewRound()
@@ -112,8 +128,6 @@ public class GameManager : MonoBehaviour
 
     public void PlayerEaten()
     {
-        //Need to put UI so u can do nothing
-
         SetLives(this.lives - 1);
 
         if (this.lives > 0)
@@ -123,6 +137,7 @@ public class GameManager : MonoBehaviour
 
         if (this.lives <= 0)
         {
+            UpdateHighScore(); // Update high score before game over
             GameOver();
         }
     }
@@ -134,7 +149,6 @@ public class GameManager : MonoBehaviour
 
         if (!HasRemainingPellets())
         {
-            //You won UI
             StartCoroutine(DelayedNewRound());
         }
     }
@@ -163,5 +177,14 @@ public class GameManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void UpdateHighScore()
+    {
+        if (score > PlayerPrefs.GetInt("highScore"))
+        {
+            PlayerPrefs.SetInt("highScore", score);
+            highScore = score; // Update the high score variable as well
+        }
     }
 }

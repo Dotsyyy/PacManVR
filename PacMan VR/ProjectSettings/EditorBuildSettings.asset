@@ -4,7 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/PacMan VR.unity
+    guid: 763d7a95ee8fe6a49809df9cbdffc4d2
+  - enabled: 1
+    path: Assets/Scenes/Ending Scene.unity
+    guid: 42575bb95790c674aacb540651d4143a
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: c67475cea17eaa7498f63fdc40e9341e,
       type: 2}
