@@ -4,9 +4,40 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // Static reference to the singleton instance
+    private static GameManager _instance;
+
+    // Public accessor for the singleton instance
+    public static GameManager Instance
+    {
+        get
+        {
+            // Check if the instance has not been set yet
+            if (_instance == null)
+            {
+                // Attempt to find an existing instance in the scene
+                _instance = FindObjectOfType<GameManager>();
+
+                // If no instance exists, create a new one
+                if (_instance == null)
+                {
+                    // Create a new GameObject to hold the GameManager instance
+                    GameObject singletonObject = new GameObject("GameManager");
+                    _instance = singletonObject.AddComponent<GameManager>();
+                }
+            }
+            return _instance;
+        }
+    }
+
+
+
+
     public Ghosts[] ghosts;
     public Player player;
     public Transform pellets;
+    public Sword sword;
+    public bool SwordGrabbed { get { return sword.Grabbed; } }
     public int score { get; private set; }
     public int lives { get; private set; }
 
@@ -37,7 +68,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     private void NewRound()
     {
         foreach (Transform singlePellet in pellets)
@@ -47,8 +77,16 @@ public class GameManager : MonoBehaviour
         ResetState();
     }
 
-    private void ResetState()
+    private IEnumerator DelayedResetState()
     {
+        for (int i = 0; i < ghosts.Length; i++)
+        {
+            ghosts[i].DeActivate();
+        }
+
+        // Wait for one second
+        yield return new WaitForSeconds(1.0f);
+
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].ResetState();
@@ -57,7 +95,10 @@ public class GameManager : MonoBehaviour
         player.ResetState();
     }
 
-
+    private void ResetState()
+    {
+        StartCoroutine(DelayedResetState());
+    }
 
     private void SetScore(int _score)
     {
@@ -69,12 +110,6 @@ public class GameManager : MonoBehaviour
         lives = _lives;
     }
 
-    public void GhostEaten(Ghosts ghost)
-    {
-        int points = ghost.points;
-        SetScore(this.score + points);
-    }
-
     public void PlayerEaten()
     {
         //Need to put UI so u can do nothing
@@ -83,7 +118,7 @@ public class GameManager : MonoBehaviour
 
         if (this.lives > 0)
         {
-            Invoke(nameof(ResetState), 3.0f);
+            StartCoroutine(DelayedResetState());
         }
 
         if (this.lives <= 0)
@@ -100,11 +135,22 @@ public class GameManager : MonoBehaviour
         if (!HasRemainingPellets())
         {
             //You won UI
-            Invoke(nameof(NewRound), 3.0f);
+            StartCoroutine(DelayedNewRound());
         }
     }
 
+    private IEnumerator DelayedNewRound()
+    {
+        yield return new WaitForSeconds(3.0f);
+        NewRound();
+    }
 
+    public void SwordHit(Ghosts ghost)
+    {
+        ghost.gameObject.SetActive(false);
+        SetScore(this.score + ghost.points);
+        ghost.ResetState();
+    }
 
     private bool HasRemainingPellets()
     {
@@ -118,5 +164,4 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
-
 }

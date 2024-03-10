@@ -3,74 +3,62 @@ using UnityEngine.AI;
 
 public class PinkyBehavior : MonoBehaviour
 {
-    public Transform[] targets; // Waypoints for Pinky to patrol
-    public Transform player; // Reference to the Player transform
-    public float scanInterval = 3f; // Interval for scanning for the player in seconds
-    public float scanDistance = 5f; // Distance to scan for the player
-    private NavMeshAgent agent;
-    private int currentWaypointIndex;
-    private float scanTimer = 0f;
+    public Transform player;
+    public float chaseRange = 10f;
+    public float sneakRange = 4f;
 
-    // Start is called before the first frame update
+    private Wander wanderScript;
+    private Chase chaseScript;
+    private Scared scaredScript;
+    private Sneak sneakScript;
+
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        currentWaypointIndex = 0;
-
-        // Set initial destination to the first waypoint
-        agent.destination = targets[currentWaypointIndex].position;
+        wanderScript = GetComponent<Wander>();
+        chaseScript = GetComponent<Chase>();
+        scaredScript = GetComponent<Scared>();
+        sneakScript = GetComponent<Sneak>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (!agent.pathPending && agent.remainingDistance < 0.1f)
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (GameManager.Instance.SwordGrabbed)
         {
-            // Move to the next waypoint if reached the current destination
-            MoveToNextWaypoint();
+            scaredScript.enabled = true;
+            chaseScript.enabled = false;
+            wanderScript.enabled = false;
+
         }
-
-        // Update the scan timer
-        scanTimer += Time.deltaTime;
-
-        // Check if it's time to scan for the player
-        if (scanTimer >= scanInterval)
+        else
         {
-            ScanForPlayer();
-            scanTimer = 0f;
-        }
-    }
+            if (distanceToPlayer <= chaseRange)
+            {
+                if (distanceToPlayer <= sneakRange)
+                {
+                    chaseScript.enabled = false;
+                    wanderScript.enabled = false;
+                    scaredScript.enabled = false;
+                    sneakScript.enabled = true;
+                }
+                else
+                {
+                    chaseScript.enabled = true;
+                    wanderScript.enabled = false;
+                    scaredScript.enabled = false;
+                    sneakScript.enabled = false;
+                }
 
-    void MoveToNextWaypoint()
-    {
-        // Move to the next waypoint in the array
-        currentWaypointIndex = (currentWaypointIndex + 1) % targets.Length;
-        agent.destination = targets[currentWaypointIndex].position; // Set destination to the next waypoint
-    }
-
-    void ScanForPlayer()
-    {
-        // Check if the player is within the scan distance
-        if (Vector3.Distance(transform.position, player.position) <= scanDistance)
-        {
-            // If the player is within the scan distance, chase the player
-            agent.destination = player.position;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            // Implement behavior when Pinky collides with the player, if needed
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            // Implement behavior when Pinky exits the collision with the player, if needed
+            }
+            else
+            {
+                wanderScript.enabled = true;
+                chaseScript.enabled = false;
+                scaredScript.enabled = false;
+                sneakScript.enabled = false;
+            }
+           
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ghosts : MonoBehaviour
 {
-    [SerializeField] protected Vector3 startingPosition;
+    public Vector3 startingPosition;
 
 
 
@@ -12,20 +12,27 @@ public class Ghosts : MonoBehaviour
 
     private void Start()
     {
-        ResetState();
+        startingPosition = this.transform.position;
+        //ResetState();
+    }
+
+    public void DeActivate()
+    {
+        this.gameObject.SetActive(false);
     }
 
     public void ResetState()
     {
         this.gameObject.SetActive(true);
         this.transform.position = this.startingPosition;
+        Debug.Log("Working?" + startingPosition);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            FindAnyObjectByType<GameManager>().PlayerEaten();
+            GameManager.Instance.PlayerEaten();
         }
     }
 
