@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(4.0f); // Wait for 4 seconds
 
         youLoseUI.SetActive(false);
-        SceneManager.LoadScene(1); // You may want to load the game over scene after showing the UI
+        SceneManager.LoadScene(2); // You may want to load the game over scene after showing the UI
     }
 
 
@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         youWinUI.SetActive(false);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
 
     }
 
