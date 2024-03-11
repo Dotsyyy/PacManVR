@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour
     public Player player;
     public Transform pellets;
     public Sword sword;
+    public GameObject youDiedUI;
+    public GameObject youWinUI;
+    public GameObject youLoseUI;
     public bool SwordGrabbed { get { return sword.Grabbed; } }
     public int score { get; private set; }
     public int highScore { get; private set; }
@@ -81,8 +84,17 @@ public class GameManager : MonoBehaviour
             singlePellet.gameObject.SetActive(false);
         }
 
-        SceneManager.LoadScene(1);
+        StartCoroutine(LoadNextScene());
     }
+
+    private IEnumerator LoadNextScene()
+    {
+        yield return new WaitForSeconds(4.0f); // Wait for 4 seconds
+
+        youLoseUI.SetActive(false);
+        SceneManager.LoadScene(1); // You may want to load the game over scene after showing the UI
+    }
+
 
     private void NewRound()
     {
@@ -95,19 +107,20 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator DelayedResetState()
     {
+        
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].DeActivate();
         }
 
         // Wait for one second
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(4.0f);
 
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].ResetState();
         }
-
+        youDiedUI.SetActive(false);
         player.ResetState();
     }
 
@@ -132,13 +145,17 @@ public class GameManager : MonoBehaviour
 
         if (this.lives > 0)
         {
+            youDiedUI.SetActive(true);
             StartCoroutine(DelayedResetState());
         }
 
         if (this.lives <= 0)
         {
             UpdateHighScore(); // Update high score before game over
+            youLoseUI.SetActive(true);
             GameOver();
+
+
         }
     }
 
@@ -149,14 +166,17 @@ public class GameManager : MonoBehaviour
 
         if (!HasRemainingPellets())
         {
-            StartCoroutine(DelayedNewRound());
+            youWinUI.SetActive(true);
+            StartCoroutine(DelayedYouWin());
         }
     }
 
-    private IEnumerator DelayedNewRound()
+    private IEnumerator DelayedYouWin()
     {
-        yield return new WaitForSeconds(3.0f);
-        NewRound();
+        yield return new WaitForSeconds(5.0f);
+        youWinUI.SetActive(false);
+        SceneManager.LoadScene(1);
+
     }
 
     public void SwordHit(Ghosts ghost)
