@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Wait for one second
-        yield return new WaitForSeconds(4.0f);
+        yield return new WaitForSeconds(5.0f);
 
         for (int i = 0; i < ghosts.Length; i++)
         {
@@ -174,6 +174,7 @@ public class GameManager : MonoBehaviour
 
     public void PelletEaten(Pellet pellet)
     {
+        AudioManager.Instance.PlayAudio("PelletEaten");
         pellet.gameObject.SetActive(false); // Deactivate the specific pellet that was eaten
         SetScore(this.score + pellet.points);
 
@@ -194,6 +195,7 @@ public class GameManager : MonoBehaviour
 
     public void SwordHit(Ghosts ghost)
     {
+        AudioManager.Instance.PlayAudio("GhostDeath");
         ghost.gameObject.SetActive(false);
         SetScore(this.score + ghost.points);
         ghost.ResetState();
