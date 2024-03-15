@@ -34,11 +34,24 @@ public class GameManager : MonoBehaviour
     public Ghosts[] ghosts;
     public Player player;
     public Transform pellets;
-    public Sword sword;
+    public Sword[] swords;
     public GameObject youDiedUI;
     public GameObject youWinUI;
     public GameObject youLoseUI;
-    public bool SwordGrabbed { get { return sword.Grabbed; } }
+    public bool SwordGrabbed
+    {
+        get
+        {
+            // Check if any sword is grabbed
+            foreach (Sword sword in swords)
+            {
+                if (sword.Grabbed)
+                    return true;
+            }
+            return false;
+        }
+    }
+
     public int score { get; private set; }
     public int highScore { get; private set; }
     public int lives { get; private set; }

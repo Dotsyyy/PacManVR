@@ -1755,7 +1755,11 @@ MonoBehaviour:
   - {fileID: 501573751}
   player: {fileID: 2106384881}
   pellets: {fileID: 1666999228862123708}
-  sword: {fileID: 690842792}
+  swords:
+  - {fileID: 690842792}
+  - {fileID: 1741878490}
+  - {fileID: 432264420}
+  - {fileID: 958376539}
   youDiedUI: {fileID: 765836064}
   youWinUI: {fileID: 887937711}
   youLoseUI: {fileID: 1193043763}
@@ -3679,7 +3683,7 @@ MonoBehaviour:
   - {fileID: 1694116953}
   - {fileID: 1309621011}
   - {fileID: 1440956804}
-  wanderSpeed: 3.5
+  wanderSpeed: 3
 --- !u!1 &315496050
 GameObject:
   m_ObjectHideFlags: 0
@@ -5113,6 +5117,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 959478948}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &432264420 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8319388049394861778, guid: 98cd57a2d5b1231488df0d67c5654acb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1149523839}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb73e4647789d7a4a882ec84c98852ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &437705846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5901,7 +5917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ba3f1eeeb9f6664fa5955a091f5f783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseSpeed: 3.5
+  chaseSpeed: 3
   player: {fileID: 2106384875}
 --- !u!114 &501573756
 MonoBehaviour:
@@ -5985,7 +6001,7 @@ MonoBehaviour:
   - {fileID: 1694116953}
   - {fileID: 1309621011}
   - {fileID: 1440956804}
-  wanderSpeed: 3.5
+  wanderSpeed: 3
 --- !u!1001 &512673371
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10613,6 +10629,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3494070713217205693}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &958376539 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8319388049394861778, guid: 98cd57a2d5b1231488df0d67c5654acb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2052275639}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb73e4647789d7a4a882ec84c98852ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &959478948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16249,7 +16277,7 @@ MonoBehaviour:
   - {fileID: 1694116953}
   - {fileID: 1309621011}
   - {fileID: 1440956804}
-  wanderSpeed: 3.5
+  wanderSpeed: 3
 --- !u!114 &1385471180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16262,7 +16290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ba3f1eeeb9f6664fa5955a091f5f783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseSpeed: 3.5
+  chaseSpeed: 3
   player: {fileID: 2106384875}
 --- !u!114 &1385471181
 MonoBehaviour:
@@ -19291,6 +19319,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1734309710}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1741878490 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8319388049394861778, guid: 98cd57a2d5b1231488df0d67c5654acb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1868826933}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb73e4647789d7a4a882ec84c98852ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1742258813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22493,7 +22533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_System: {fileID: 2106384878}
-  m_MoveSpeed: 3
+  m_MoveSpeed: 3.2
   m_EnableStrafe: 1
   m_EnableFly: 0
   m_UseGravity: 1
