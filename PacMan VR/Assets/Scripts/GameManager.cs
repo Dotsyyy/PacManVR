@@ -120,19 +120,25 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator DelayedResetState()
     {
-        
+
+        player.GetComponent<CharacterController>().enabled = false;
+
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].DeActivate();
         }
 
-        // Wait for one second
+        // Wait for five second
         yield return new WaitForSeconds(5.0f);
 
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].ResetState();
         }
+
+
+        player.GetComponent<CharacterController>().enabled = true;
+
         youDiedUI.SetActive(false);
         player.ResetState();
     }
