@@ -34,11 +34,24 @@ public class GameManager : MonoBehaviour
     public Ghosts[] ghosts;
     public Player player;
     public Transform pellets;
-    public Sword sword;
+    public Sword[] swords;
     public GameObject youDiedUI;
     public GameObject youWinUI;
     public GameObject youLoseUI;
-    public bool SwordGrabbed { get { return sword.Grabbed; } }
+    public bool SwordGrabbed
+    {
+        get
+        {
+            // Check if any sword is grabbed
+            foreach (Sword sword in swords)
+            {
+                if (sword.Grabbed)
+                    return true;
+            }
+            return false;
+        }
+    }
+
     public int score { get; private set; }
     public int highScore { get; private set; }
     public int lives { get; private set; }
@@ -107,19 +120,25 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator DelayedResetState()
     {
-        
+
+        player.GetComponent<CharacterController>().enabled = false;
+
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].DeActivate();
         }
 
-        // Wait for one second
-        yield return new WaitForSeconds(4.0f);
+        // Wait for five second
+        yield return new WaitForSeconds(5.0f);
 
         for (int i = 0; i < ghosts.Length; i++)
         {
             ghosts[i].ResetState();
         }
+
+
+        player.GetComponent<CharacterController>().enabled = true;
+
         youDiedUI.SetActive(false);
         player.ResetState();
     }
@@ -161,6 +180,7 @@ public class GameManager : MonoBehaviour
 
     public void PelletEaten(Pellet pellet)
     {
+        AudioManager.Instance.PlayAudio("PelletEaten");
         pellet.gameObject.SetActive(false); // Deactivate the specific pellet that was eaten
         SetScore(this.score + pellet.points);
 
@@ -181,6 +201,7 @@ public class GameManager : MonoBehaviour
 
     public void SwordHit(Ghosts ghost)
     {
+        AudioManager.Instance.PlayAudio("GhostDeath");
         ghost.gameObject.SetActive(false);
         SetScore(this.score + ghost.points);
         ghost.ResetState();

@@ -25,7 +25,6 @@ public class Ghosts : MonoBehaviour
     {
         this.gameObject.SetActive(true);
         this.transform.position = this.startingPosition;
-        Debug.Log("Working?" + startingPosition);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,6 +32,7 @@ public class Ghosts : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             GameManager.Instance.PlayerEaten();
+            AudioManager.Instance.PlayAudio("PlayerDeath");
         }
     }
 
